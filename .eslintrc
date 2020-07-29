@@ -1,33 +1,56 @@
 {
-  "parser": "babel-eslint",
-  "extends": [
-    "standard",
-    "standard-react",
-    "plugin:prettier/recommended",
-    //"prettier/standard",
-    "prettier/react"
-  ],
-  "env": {
-    "node": true
-  },
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "ecmaFeatures": {
-      "legacyDecorators": true,
-      "jsx": true
+    "parser": "babel-eslint",
+    "extends": [
+        "standard",
+        "plugin:react/recommended"
+    ],
+    "env": {
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "settings": {
+        "react": {
+            "version": "16"
+        }
+    },
+    "rules": {
+        "indent": "off",
+        "semi": 0,
+        "brace-style": 0,
+        "comma-dangle": [
+            "error",
+            "always-multiline"
+        ],
+        "object-property-newline": 0,
+        "one-var": 0,
+        "spaced-comment": 0,
+        "eqeqeq": 0,
+        "operator-linebreak": [
+            "error",
+            "before"
+        ],
+        "prefer-promise-reject-errors": 0,
+        "space-before-function-paren": 0,
+        "react/prop-types": 0,
+        "react/jsx-uses-vars": [
+            "error"
+        ],
+        "react/no-direct-mutation-state": 0,
+        "no-extend-native": 0,
+        "no-extra-boolean-cast": 0,
+        "no-return-assign": 0,
+        "no-sequences": 0,
+        "no-mixed-operators": 0,
+        "react/display-name": 0,
+        "react/no-deprecated": 0,
+        "react/jsx-handler-names": 0,
+        "react/jsx-fragments": 0,
+        "react/no-unused-prop-types": 0,
+        "import/export": 0
     }
-  },
-  "settings": {
-    "react": {
-      "version": "16"
-    }
-  },
-  "rules": {
-    "space-before-function-paren": 0,
-    "react/prop-types": 0,
-    "react/jsx-handler-names": 0,
-    "react/jsx-fragments": 0,
-    "react/no-unused-prop-types": 0,
-    "import/export": 0
-  }
 }
