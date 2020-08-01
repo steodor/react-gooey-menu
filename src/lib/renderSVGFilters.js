@@ -1,6 +1,6 @@
 let alreadyInserted = false;
 
-export default () => {
+const renderSVGFilters = () => {
     if (alreadyInserted) { return; }
 
     try {
@@ -30,3 +30,5 @@ export default () => {
         window.console && console.error('[react-gooey-menu] Error inserting SVG filters in DOM', e);
     }
 };
+
+export default renderSVGFilters;

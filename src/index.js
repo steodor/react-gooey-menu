@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import jss from 'jss';
-import renderFilters from './lib/renderFilters';
+import { defaultMenuIcon, defaultCloseIcon } from './lib/icons';
+import renderSVGFilters from './lib/renderSVGFilters';
 
 const useStyles = createUseStyles({
     main: {
@@ -11,12 +12,13 @@ const useStyles = createUseStyles({
 
 const sheet = jss.createStyleSheet({}, { link: true }).attach();
 
-const createMenuItemRules = numberOfItems => {
+const createMenuItemRules = (numberOfItems, color, background) => {
     const rules = [];
 
     for (let i = 0; i < numberOfItems; i++) {
         rules.push(sheet.addRule('menuItem-' + i, {
-            color: 'red',
+            color,
+            background,
         }));
     }
 
@@ -24,20 +26,23 @@ const createMenuItemRules = numberOfItems => {
 }
 
 export const GooeyMenu = ({
-    icon,
-    closeIcon,
-    className = 'react-gooey-menu',
-    color = '#ff4081',
+    icon = defaultMenuIcon,
+    closeIcon = defaultCloseIcon,
+    className = '',
+    background = '#ff4081',
+    color = '#fff',
     children,
-    text,
+    initiallyOpen = false,
 }) => {
-    useEffect(renderFilters, []);
+    useEffect(renderSVGFilters, []); // renders SVG filters only once per page lifetime, rest of the calls are noops.
 
     const classes = useStyles();
 
+    //--------- ITEMS RENDERING / STYLING
+
     const [numberOfItems, setNumberOfItems] = useState(children && children.length || 0);
 
-    const [itemRules, setItemRules] = useState(createMenuItemRules(numberOfItems));
+    const [itemRules, setItemRules] = useState(createMenuItemRules(numberOfItems, color, background));
 
     useEffect(() => {
         const newNumberOfItems = children && children.length || 0;
@@ -46,19 +51,23 @@ export const GooeyMenu = ({
             for (let i = 0; i < numberOfItems; i++) {
                 sheet.deleteRule('menuItem-' + i);
             }
-            setItemRules(createMenuItemRules(newNumberOfItems));
+            setItemRules(createMenuItemRules(newNumberOfItems, color, background));
             setNumberOfItems(newNumberOfItems);
         }
-    }, [children, numberOfItems, setItemRules, setNumberOfItems]);
+    }, [children, numberOfItems, color, background, setItemRules, setNumberOfItems]);
 
     const renderedChildren = useMemo(() => children && children.map((child, index) => {
-        console.warn('child', index, itemRules);
+        // console.warn('child', index, itemRules);
         const rule = itemRules[index] || {};
-        return <div key={index} className={rule.id}>{child}</div>;
+        return <span key={index} className={rule.id}>{child}</span>;
     }), [itemRules]);
 
-    return <div>
-        <div className={classes.main}>Example Component: {text}</div>
+    //--------- STATE MANAGEMENT
+
+    const [isOpen, setIsOpen] = useState(initiallyOpen);
+
+    return <div className={`react-gooey-menu${isOpen ? ' is-open' : ''} ${className}`}>
+        <div className={classes.main, 'react-gooey-menu-main-button'} onClick={() => setIsOpen(open => !open)}>{icon}</div>
         {renderedChildren}
     </div>;
 };
